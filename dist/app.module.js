@@ -24,6 +24,7 @@ AppModule = __decorate([
                     methods: 'GET,PUT,PATCH,POST,DELETE',
                     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
                 },
+                playground: true,
             }),
             mongoose_1.MongooseModule.forRoot(config_1.Mongo_URI_Server, config_1.MONGO_OPTIONS),
             components_module_1.ComponentsModule,

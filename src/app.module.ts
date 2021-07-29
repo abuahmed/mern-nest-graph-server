@@ -21,6 +21,7 @@ import { MONGO_OPTIONS, Mongo_URI_Server } from './config';
         // preflightContinue: false,
         // optionsSuccessStatus: 204
       },
+      playground: true,
     }),
     MongooseModule.forRoot(Mongo_URI_Server, MONGO_OPTIONS),
     ComponentsModule,
