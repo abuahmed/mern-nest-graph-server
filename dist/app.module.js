@@ -26,7 +26,7 @@ AppModule = __decorate([
                 },
                 playground: true,
             }),
-            mongoose_1.MongooseModule.forRoot(config_1.Mongo_URI_Server, config_1.MONGO_OPTIONS),
+            mongoose_1.MongooseModule.forRoot(config_1.MONGO_URI, config_1.MONGO_OPTIONS),
             components_module_1.ComponentsModule,
         ],
     })

@@ -22,7 +22,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResolver = void 0;
+const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
+const auth_guard_1 = require("../../config/auth.guard");
 const user_dto_1 = require("./dto/user.dto");
 const user_schema_1 = require("./entities/user.schema");
 const user_service_1 = require("./user.service");
@@ -74,6 +76,7 @@ __decorate([
 ], UserResolver.prototype, "Users", null);
 __decorate([
     graphql_1.Query(() => user_schema_1.User),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
     __param(0, graphql_1.Args('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_dto_1.ListUserInput]),

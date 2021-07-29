@@ -6,7 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { ComponentsModule } from './components/components.module';
-import { MONGO_OPTIONS, Mongo_URI_Server } from './config';
+import { MONGO_OPTIONS, MONGO_URI } from './config';
 
 //ConfigModule.forRoot({isGlobal: true,  }),
 @Module({
@@ -23,7 +23,7 @@ import { MONGO_OPTIONS, Mongo_URI_Server } from './config';
       },
       playground: true,
     }),
-    MongooseModule.forRoot(Mongo_URI_Server, MONGO_OPTIONS),
+    MongooseModule.forRoot(MONGO_URI, MONGO_OPTIONS),
     ComponentsModule,
   ],
 })

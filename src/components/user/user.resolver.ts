@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/config/auth.guard';
 import { CreateUserInput, ListUserInput, UpdateUserInput } from './dto/user.dto';
 import { ReturnStatus, ReturnUser, User } from './entities/user.schema';
 import { UserService } from './user.service';
@@ -14,6 +16,7 @@ export class UserResolver {
   }
 
   @Query(() => User)
+  @UseGuards(AuthGuard)
   async getUserProfile(@Args('input') input: ListUserInput) {
     return this._userService.getUserProfile(input);
   }
