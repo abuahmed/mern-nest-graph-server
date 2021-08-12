@@ -6,8 +6,8 @@ import { JWT_SECRET } from '../config';
 @Injectable()
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest<Request>();
-    return validateRequest(request);
+    const req = context.switchToHttp().getRequest();
+    return validateRequest(req);
   }
 }
 function validateRequest(req: any): boolean | Promise<boolean> | Observable<boolean> {

@@ -1,8 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from 'src/config/auth.guard';
+import { AuthService } from '../auth/auth.service';
+import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
+import { GetAuthenticatedUser } from '../get-authenticated-user.decorator';
 import { CreateUserInput, ListUserInput, UpdateUserInput } from './dto/user.dto';
-import { ReturnStatus, ReturnUser, User } from './entities/user.schema';
+import { ReturnStatus, ReturnUser, User, UserDocument } from './entities/user.schema';
 import { UserService } from './user.service';
 
 @Resolver()
@@ -21,9 +24,10 @@ export class UserResolver {
     return this._userService.getUserProfile(input);
   }
   //Mutations
-  @Mutation(() => ReturnUser)
-  async authUser(@Args('input') input: ListUserInput) {
-    return this._userService.authUser(input);
+  @Mutation(() => User)
+  @UseGuards(LocalAuthGuard)
+  async authUser(@Args('input') input: ListUserInput, @GetAuthenticatedUser() user: UserDocument) {
+    return this._userService.login(user);
   }
   @Mutation(() => ReturnStatus)
   async register(@Args('input') input: CreateUserInput) {

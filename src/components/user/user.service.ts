@@ -4,19 +4,23 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReturnStatus, ReturnUser, User, UserDocument } from './entities/user.schema';
 import { CreateUserInput, ListUserInput, UpdateUserInput } from './dto/user.dto';
 import { validate, registerSchema, loginSchema } from '../../validation';
-import generateToken from 'src/utils/jwt';
+//import generateToken from 'src/utils/jwt';
 import { sendMail } from 'src/utils/mail';
 import { APP_HOSTNAME } from 'src/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private UserModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private UserModel: Model<UserDocument>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async findAll(): Promise<User[]> {
     return this.UserModel.find().exec();
   }
 
-  async authUser(listUserInput: ListUserInput): Promise<ReturnUser> {
+  async authUser(listUserInput: ListUserInput): Promise<UserDocument> {
     await validate(loginSchema, listUserInput);
 
     const { email, password } = listUserInput;
@@ -32,14 +36,14 @@ export class UserService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-
-    const userData = new ReturnUser();
-    userData._id = user._id;
-    userData.name = user.name;
-    userData.email = user.email;
-    userData.isAdmin = user.isAdmin;
-    userData.token = generateToken(user._id);
-    return userData;
+    return user;
+    // const userData = new ReturnUser();
+    // userData._id = user._id;
+    // userData.name = user.name;
+    // userData.email = user.email;
+    // userData.isAdmin = user.isAdmin;
+    // userData.token = generateToken(user._id);
+    // return userData;
   }
 
   async getUserProfile(listUserInput: ListUserInput): Promise<User> {
@@ -117,5 +121,16 @@ export class UserService {
 
   async deleteAll(): Promise<number> {
     return (await this.UserModel.deleteMany()).deletedCount;
+  }
+
+  async login(user: UserDocument) {
+    const payload = { id: user._id };
+    return {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: this.jwtService.sign(payload),
+    };
   }
 }

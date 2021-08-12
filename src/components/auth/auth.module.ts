@@ -5,6 +5,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JWT_SECRET } from 'src/config';
+import { UserService } from '../user/user.service';
+import { UserModule } from '../user/user.module';
 @Module({
   imports: [
     PassportModule,
@@ -12,6 +14,7 @@ import { JWT_SECRET } from 'src/config';
       secret: JWT_SECRET,
       signOptions: { expiresIn: '30d', algorithm: 'HS256' },
     }),
+    UserModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],

@@ -7,11 +7,12 @@
     "experimentalDecorators": true,
     "target": "es6",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "baseUrl": "./",
     "incremental": true,
     "esModuleInterop": true,
     "moduleResolution": "node"
+    // "noEmit": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

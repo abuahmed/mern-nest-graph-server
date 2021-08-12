@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
-import { User } from '../entities/user.schema';
+//import { User } from '../entities/user.schema';
 
 @InputType()
 export class ListUserInput {
