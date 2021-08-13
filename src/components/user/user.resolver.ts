@@ -1,7 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AuthGuard } from 'src/config/auth.guard';
-import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { GetAuthenticatedUser } from '../get-authenticated-user.decorator';
 import { CreateUserInput, ListUserInput, UpdateUserInput } from './dto/user.dto';
@@ -19,7 +18,7 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getUserProfile(@Args('input') input: ListUserInput) {
     return this._userService.getUserProfile(input);
   }
